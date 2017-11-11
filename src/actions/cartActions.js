@@ -13,3 +13,10 @@ export function deleteFromCart(bookId) {
         payload: bookId
     }
 }
+
+export function incrementQuantity(bookId) {
+    return {
+        type: "INCREMENT_QUANTITY",
+        payload: bookId
+    }
+}

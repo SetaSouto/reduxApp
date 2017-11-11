@@ -1,16 +1,29 @@
 "use strict";
 
 export function cartReducers(state = {cart: []}, action) {
+    function findIndexById(id) {
+        return state.cart.findIndex((book) => book._id === id)
+    }
+
     switch (action.type) {
         case 'ADD_TO_CART':
-            return (state.cart.findIndex((book) => book._id === action.payload._id) === -1) ?
+            return (findIndexById(action.payload._id) === -1) ?
                 {cart: [...state.cart, action.payload]} :
                 {...state};
             break;
         case 'DELETE_FROM_CART':
-            const index = state.cart.findIndex((book) => book._id === action.payload);
+            let index = findIndexById(action.payload);
             return {cart: [...state.cart.slice(0, index), ...state.cart.slice(index + 1)]};
             break;
+        case 'INCREMENT_QUANTITY':
+            index = findIndexById(action.payload);
+            return {
+                cart: [
+                    ...state.cart.slice(0, index),
+                    {...state.cart[index], quantity: state.cart[index].quantity + 1},
+                    ...state.cart.slice(index + 1)
+                ]
+            }
     }
     return state;
 }
