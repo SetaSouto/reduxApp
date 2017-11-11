@@ -6,3 +6,10 @@ export function addToCart(book) {
         payload: book
     }
 }
+
+export function deleteFromCart(bookId) {
+    return {
+        type: "DELETE_FROM_CART",
+        payload: bookId
+    }
+}

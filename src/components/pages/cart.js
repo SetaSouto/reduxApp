@@ -1,0 +1,66 @@
+"use strict";
+import React from 'react';
+import {connect} from 'react-redux';
+import {Panel, Col, Row, well, Button, ButtonGroup, Label} from 'react-bootstrap';
+import {bindActionCreators} from 'redux'
+import {deleteFromCart} from "../../actions/cartActions";
+
+class Cart extends React.Component {
+    render() {
+        return this.props.cart.length ? this.renderCart() : Cart.renderEmpty();
+    }
+
+    static renderEmpty() {
+        return (<div></div>)
+    }
+
+    renderCart() {
+        return (
+            <Panel header="Cart" bsStyle="primary">
+                {this.props.cart.map(item => {
+                    return (
+                        <Panel key={item._id}>
+                            <Row>
+                                <Col xs={12} sm={6}>
+                                    <h4>{item.title}</h4>
+                                </Col>
+                                <Col xs={12} sm={2} style={{textAlign: 'center'}}>
+                                    <h4>usd. {item.price}</h4>
+                                </Col>
+                                <Col xs={12} sm={1} style={{textAlign: 'center'}}>
+                                    <Label bsStyle="success">1</Label>
+                                </Col>
+                                <Col xs={12} sm={3} style={{textAlign: 'center'}}>
+                                    <div>
+                                        <ButtonGroup style={{minWidth: '30px'}}>
+                                            <Button bsStyle="default">-</Button>
+                                            <Button bsStyle="default">+</Button>
+                                            <Button bsStyle="danger"
+                                                    onClick={this.onDelete.bind(this, item._id)}>Delete</Button>
+                                        </ButtonGroup>
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Panel>
+                    )
+                })}
+            </Panel>
+        )
+    }
+
+    onDelete(_id) {
+        this.props.deleteFromCart(_id);
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        cart: state.cart.cart
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({deleteFromCart}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
