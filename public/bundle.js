@@ -43009,7 +43009,12 @@ var Cart = function (_React$Component) {
     function Cart() {
         _classCallCheck(this, Cart);
 
-        return _possibleConstructorReturn(this, (Cart.__proto__ || Object.getPrototypeOf(Cart)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Cart.__proto__ || Object.getPrototypeOf(Cart)).call(this));
+
+        _this.state = {
+            showingCheckoutModal: false
+        };
+        return _this;
     }
 
     _createClass(Cart, [{
@@ -43092,8 +43097,112 @@ var Cart = function (_React$Component) {
                             )
                         )
                     );
-                })
+                }),
+                _react2.default.createElement(
+                    _reactBootstrap.Row,
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.Col,
+                        { xs: 12 },
+                        _react2.default.createElement(
+                            'h4',
+                            null,
+                            'Number of books: ',
+                            _react2.default.createElement(
+                                'strong',
+                                null,
+                                this.getTotalQuantity()
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'h4',
+                            null,
+                            'Total amount: $',
+                            _react2.default.createElement(
+                                'strong',
+                                null,
+                                this.getTotalAmount()
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { bsStyle: 'success', bsSize: 'small', onClick: this.showCheckoutModal.bind(this) },
+                            'PROCEED TO CHECKOUT'
+                        )
+                    )
+                ),
+                _react2.default.createElement(
+                    _reactBootstrap.Modal,
+                    { show: this.state.showingCheckoutModal,
+                        onHide: this.closeCheckoutModal.bind(this) },
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Header,
+                        { closeButton: true },
+                        _react2.default.createElement(
+                            _reactBootstrap.Modal.Title,
+                            null,
+                            'Confirm purchase'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Body,
+                        null,
+                        _react2.default.createElement(
+                            'h6',
+                            null,
+                            'Your order has been saved.'
+                        ),
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            'You will receive an email confirmation.'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _reactBootstrap.Modal.Footer,
+                        null,
+                        _react2.default.createElement(
+                            'p',
+                            { className: 'text-center' },
+                            'You are purchasing ',
+                            this.getTotalQuantity(),
+                            ' book',
+                            this.getTotalQuantity() > 1 ? "s" : "",
+                            ' with a total price of: $',
+                            this.getTotalAmount()
+                        ),
+                        _react2.default.createElement(
+                            _reactBootstrap.Button,
+                            { onClick: this.closeCheckoutModal.bind(this) },
+                            'Close'
+                        )
+                    )
+                )
             );
+        }
+    }, {
+        key: 'showCheckoutModal',
+        value: function showCheckoutModal() {
+            this.setState({ showingCheckoutModal: true });
+        }
+    }, {
+        key: 'closeCheckoutModal',
+        value: function closeCheckoutModal() {
+            this.setState({ showingCheckoutModal: false });
+        }
+    }, {
+        key: 'getTotalAmount',
+        value: function getTotalAmount() {
+            return this.props.cart.reduce(function (total, book) {
+                return total + book.price * book.quantity;
+            }, 0);
+        }
+    }, {
+        key: 'getTotalQuantity',
+        value: function getTotalQuantity() {
+            return this.props.cart.reduce(function (total, book) {
+                return total + book.quantity;
+            }, 0);
         }
     }], [{
         key: 'renderEmpty',
@@ -43112,7 +43221,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({ deleteFromCart: _cartActions.deleteFromCart, incrementQuantity: _cartActions.incrementQuantity, decrementQuantity: _cartActions.decrementQuantity }, dispatch);
+    return (0, _redux.bindActionCreators)({ deleteFromCart: _cartActions.deleteFromCart, incrementQuantity: _cartActions.incrementQuantity, decrementQuantity: _cartActions.decrementQuantity, getTotalAmount: _cartActions.getTotalAmount }, dispatch);
 }
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cart);
