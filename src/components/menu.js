@@ -1,6 +1,8 @@
 "use strict";
 import React from 'react';
 import {Badge, Nav, Navbar, NavItem} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
+import {Link} from 'react-router-dom';
 
 class Menu extends React.Component {
     render() {
@@ -8,7 +10,7 @@ class Menu extends React.Component {
             <Navbar inverse fixedTop>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <a href="/">Books</a>
+                        <Link to="/">Books</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle/>
                 </Navbar.Header>
@@ -18,7 +20,7 @@ class Menu extends React.Component {
                         <NavItem eventKey={2} href="/contactus">Contact us</NavItem>
                     </Nav>
                     <Nav pullRight>
-                        <NavItem eventKey={1} href="/admin">Admin</NavItem>
+                        <LinkContainer to="/admin"><NavItem eventkey={1}>Admin</NavItem></LinkContainer>
                         <NavItem eventKey={2} href="/cart">Your Cart <Badge className="badge">1</Badge></NavItem>
                     </Nav>
                 </Navbar.Collapse>
