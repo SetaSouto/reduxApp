@@ -20,3 +20,10 @@ export function incrementQuantity(bookId) {
         payload: bookId
     }
 }
+
+export function decrementQuantity(bookId) {
+    return {
+        type: "DECREMENT_QUANTITY",
+        payload: bookId
+    }
+}

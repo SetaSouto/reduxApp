@@ -9763,6 +9763,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.addToCart = addToCart;
 exports.deleteFromCart = deleteFromCart;
 exports.incrementQuantity = incrementQuantity;
+exports.decrementQuantity = decrementQuantity;
 function addToCart(book) {
     return {
         type: "ADD_TO_CART",
@@ -9780,6 +9781,13 @@ function deleteFromCart(bookId) {
 function incrementQuantity(bookId) {
     return {
         type: "INCREMENT_QUANTITY",
+        payload: bookId
+    };
+}
+
+function decrementQuantity(bookId) {
+    return {
+        type: "DECREMENT_QUANTITY",
         payload: bookId
     };
 }
@@ -31310,6 +31318,18 @@ function cartReducers() {
             return index !== -1 ? {
                 cart: [].concat(_toConsumableArray(state.cart.slice(0, index)), [_extends({}, state.cart[index], { quantity: state.cart[index].quantity + 1 })], _toConsumableArray(state.cart.slice(index + 1)))
             } : _extends({}, state);
+            break;
+        case 'DECREMENT_QUANTITY':
+            index = findIndexById(action.payload);
+            if (index !== -1) {
+                var quantity = state.cart[index].quantity;
+                return quantity > 1 ? {
+                    cart: [].concat(_toConsumableArray(state.cart.slice(0, index)), [_extends({}, state.cart[index], { quantity: state.cart[index].quantity - 1 })], _toConsumableArray(state.cart.slice(index + 1)))
+                } : {
+                    cart: [].concat(_toConsumableArray(state.cart.slice(0, index)), _toConsumableArray(state.cart.slice(index + 1)))
+                };
+            }
+            return _extends({}, state);
     }
     return state;
 }
@@ -43051,7 +43071,8 @@ var Cart = function (_React$Component) {
                                         { style: { minWidth: '30px' } },
                                         _react2.default.createElement(
                                             _reactBootstrap.Button,
-                                            { bsStyle: 'default' },
+                                            { bsStyle: 'default',
+                                                onClick: _this2.onDecrement.bind(_this2, item._id) },
                                             '-'
                                         ),
                                         _react2.default.createElement(
@@ -43084,6 +43105,11 @@ var Cart = function (_React$Component) {
         value: function onIncrement(_id) {
             this.props.incrementQuantity(_id);
         }
+    }, {
+        key: 'onDecrement',
+        value: function onDecrement(_id) {
+            this.props.decrementQuantity(_id);
+        }
     }], [{
         key: 'renderEmpty',
         value: function renderEmpty() {
@@ -43101,7 +43127,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({ deleteFromCart: _cartActions.deleteFromCart, incrementQuantity: _cartActions.incrementQuantity }, dispatch);
+    return (0, _redux.bindActionCreators)({ deleteFromCart: _cartActions.deleteFromCart, incrementQuantity: _cartActions.incrementQuantity, decrementQuantity: _cartActions.decrementQuantity }, dispatch);
 }
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Cart);

@@ -25,6 +25,23 @@ export function cartReducers(state = {cart: []}, action) {
                     ]
                 } :
                 {...state};
+            break;
+        case 'DECREMENT_QUANTITY':
+            index = findIndexById(action.payload);
+            if (index !== -1) {
+                const quantity = state.cart[index].quantity;
+                return quantity > 1 ?
+                    {
+                        cart: [
+                            ...state.cart.slice(0, index),
+                            {...state.cart[index], quantity: state.cart[index].quantity - 1},
+                            ...state.cart.slice(index + 1)]
+                    } :
+                    {
+                        cart: [...state.cart.slice(0, index), ...state.cart.slice(index + 1)]
+                    }
+            }
+            return {...state};
     }
     return state;
 }
