@@ -27,15 +27,9 @@ export function booksReducers(state = {
             return {books: [...state.books, ...action.payload]};
             break;
         case 'DELETE_BOOK':
-            const books = [...state.books];
-            const indexToDelete = books.findIndex((book) => book._id === action.payload._id);
-            if (indexToDelete !== -1) {
-                const newState = {...state};
-                newState.books = [...books.slice(0, indexToDelete), ...books.slice(indexToDelete + 1)];
-                return newState;
-            } else {
-                return state;
-            }
+            const indexToDelete = state.books.findIndex((book) => book._id === action.payload);
+            return indexToDelete === -1 ? {...state} :
+                {...state, books: [...state.books.slice(0, indexToDelete), ...state.books.slice(indexToDelete + 1)]};
             break;
         case 'UPDATE_BOOK':
             const indexToUpdate = state.books.findIndex((book) => book._id === action.payload._id);
