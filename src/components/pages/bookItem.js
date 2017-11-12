@@ -1,8 +1,8 @@
 import React from 'react';
-import {Row, Col, Well, Button} from 'react-bootstrap';
+import {Button, Col, Row, Well} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {addToCart} from "../../actions/cartActions";
+import {addToCart, incrementQuantity} from "../../actions/cartActions";
 
 class BookItem extends React.Component {
     render() {
@@ -15,21 +15,27 @@ class BookItem extends React.Component {
                         <h6>usd. {this.props.price}</h6>
                         <Button
                             onClick={this.handleCart.bind(this)}
-                            bsStyle="primary">Buy now</Button>
+                            bsStyle="primary">{this.cartContainsThis.bind(this)() ? "Add another one" : "Buy now"}</Button>
                     </Col>
                 </Row>
             </Well>
         )
     }
 
+    cartContainsThis() {
+        return this.props.cart.findIndex((book) => book._id === this.props._id) !== -1;
+    }
+
     handleCart() {
-        this.props.addToCart({
-            _id: this.props._id,
-            title: this.props.title,
-            description: this.props.description,
-            price: this.props.price,
-            quantity: 1
-        })
+        return this.cartContainsThis() ?
+            this.props.incrementQuantity(this.props._id) :
+            this.props.addToCart({
+                _id: this.props._id,
+                title: this.props.title,
+                description: this.props.description,
+                price: this.props.price,
+                quantity: 1
+            });
     }
 }
 
@@ -38,7 +44,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({addToCart}, dispatch)
+    return bindActionCreators({addToCart, incrementQuantity}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookItem);

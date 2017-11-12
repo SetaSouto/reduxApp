@@ -17,13 +17,14 @@ export function cartReducers(state = {cart: []}, action) {
             break;
         case 'INCREMENT_QUANTITY':
             index = findIndexById(action.payload);
-            return {
-                cart: [
-                    ...state.cart.slice(0, index),
-                    {...state.cart[index], quantity: state.cart[index].quantity + 1},
-                    ...state.cart.slice(index + 1)
-                ]
-            }
+            return index !== -1 ? {
+                    cart: [
+                        ...state.cart.slice(0, index),
+                        {...state.cart[index], quantity: state.cart[index].quantity + 1},
+                        ...state.cart.slice(index + 1)
+                    ]
+                } :
+                {...state};
     }
     return state;
 }

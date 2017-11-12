@@ -31307,9 +31307,9 @@ function cartReducers() {
             break;
         case 'INCREMENT_QUANTITY':
             index = findIndexById(action.payload);
-            return {
+            return index !== -1 ? {
                 cart: [].concat(_toConsumableArray(state.cart.slice(0, index)), [_extends({}, state.cart[index], { quantity: state.cart[index].quantity + 1 })], _toConsumableArray(state.cart.slice(index + 1)))
-            };
+            } : _extends({}, state);
     }
     return state;
 }
@@ -42769,16 +42769,25 @@ var BookItem = function (_React$Component) {
                             {
                                 onClick: this.handleCart.bind(this),
                                 bsStyle: 'primary' },
-                            'Buy now'
+                            this.cartContainsThis.bind(this)() ? "Add another one" : "Buy now"
                         )
                     )
                 )
             );
         }
     }, {
+        key: 'cartContainsThis',
+        value: function cartContainsThis() {
+            var _this2 = this;
+
+            return this.props.cart.findIndex(function (book) {
+                return book._id === _this2.props._id;
+            }) !== -1;
+        }
+    }, {
         key: 'handleCart',
         value: function handleCart() {
-            this.props.addToCart({
+            return this.cartContainsThis() ? this.props.incrementQuantity(this.props._id) : this.props.addToCart({
                 _id: this.props._id,
                 title: this.props.title,
                 description: this.props.description,
@@ -42796,7 +42805,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return (0, _redux.bindActionCreators)({ addToCart: _cartActions.addToCart }, dispatch);
+    return (0, _redux.bindActionCreators)({ addToCart: _cartActions.addToCart, incrementQuantity: _cartActions.incrementQuantity }, dispatch);
 }
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(BookItem);
