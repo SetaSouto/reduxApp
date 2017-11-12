@@ -44736,6 +44736,8 @@ var _reactRouterBootstrap = __webpack_require__(357);
 
 var _reactRouterDom = __webpack_require__(163);
 
+var _reactRedux = __webpack_require__(37);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44808,20 +44810,34 @@ var Menu = function (_React$Component) {
                             'Your Cart ',
                             _react2.default.createElement(
                                 _reactBootstrap.Badge,
-                                { className: 'badge' },
-                                '1'
+                                {
+                                    className: 'badge' },
+                                this.countItemsInCart.bind(this)()
                             )
                         )
                     )
                 )
             );
         }
+    }, {
+        key: 'countItemsInCart',
+        value: function countItemsInCart() {
+            return this.props.cart.reduce(function (total, book) {
+                return total + book.quantity;
+            }, 0);
+        }
     }]);
 
     return Menu;
 }(_react2.default.Component);
 
-exports.default = Menu;
+function mapStateToProps(state) {
+    return {
+        cart: state.cart.cart
+    };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(Menu);
 
 /***/ }),
 /* 357 */
