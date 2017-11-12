@@ -34,11 +34,11 @@ class Cart extends React.Component {
                                     <div>
                                         <ButtonGroup style={{minWidth: '30px'}}>
                                             <Button bsStyle="default"
-                                                    onClick={this.onDecrement.bind(this, item._id)}>-</Button>
+                                                    onClick={this.props.decrementQuantity.bind(this, item._id)}>-</Button>
                                             <Button bsStyle="default"
-                                                    onClick={this.onIncrement.bind(this, item._id)}>+</Button>
+                                                    onClick={this.props.incrementQuantity.bind(this, item._id)}>+</Button>
                                             <Button bsStyle="danger"
-                                                    onClick={this.onDelete.bind(this, item._id)}>Delete</Button>
+                                                    onClick={this.props.deleteFromCart.bind(this, item._id)}>Delete</Button>
                                         </ButtonGroup>
                                     </div>
                                 </Col>
@@ -48,18 +48,6 @@ class Cart extends React.Component {
                 })}
             </Panel>
         )
-    }
-
-    onDelete(_id) {
-        this.props.deleteFromCart(_id);
-    }
-
-    onIncrement(_id) {
-        this.props.incrementQuantity(_id);
-    }
-
-    onDecrement(_id) {
-        this.props.decrementQuantity(_id);
     }
 }
 

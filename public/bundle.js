@@ -43072,19 +43072,19 @@ var Cart = function (_React$Component) {
                                         _react2.default.createElement(
                                             _reactBootstrap.Button,
                                             { bsStyle: 'default',
-                                                onClick: _this2.onDecrement.bind(_this2, item._id) },
+                                                onClick: _this2.props.decrementQuantity.bind(_this2, item._id) },
                                             '-'
                                         ),
                                         _react2.default.createElement(
                                             _reactBootstrap.Button,
                                             { bsStyle: 'default',
-                                                onClick: _this2.onIncrement.bind(_this2, item._id) },
+                                                onClick: _this2.props.incrementQuantity.bind(_this2, item._id) },
                                             '+'
                                         ),
                                         _react2.default.createElement(
                                             _reactBootstrap.Button,
                                             { bsStyle: 'danger',
-                                                onClick: _this2.onDelete.bind(_this2, item._id) },
+                                                onClick: _this2.props.deleteFromCart.bind(_this2, item._id) },
                                             'Delete'
                                         )
                                     )
@@ -43094,21 +43094,6 @@ var Cart = function (_React$Component) {
                     );
                 })
             );
-        }
-    }, {
-        key: 'onDelete',
-        value: function onDelete(_id) {
-            this.props.deleteFromCart(_id);
-        }
-    }, {
-        key: 'onIncrement',
-        value: function onIncrement(_id) {
-            this.props.incrementQuantity(_id);
-        }
-    }, {
-        key: 'onDecrement',
-        value: function onDecrement(_id) {
-            this.props.decrementQuantity(_id);
         }
     }], [{
         key: 'renderEmpty',
